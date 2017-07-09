@@ -1,0 +1,58 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from TaskServiceImplService WSDL service -->
+
+  <service name="TaskServiceImpl" provider="java:RPC" style="wrapped" use="literal">
+      <parameter name="wsdlTargetNamespace" value="http://service.taskmanagerapp.example.com"/>
+      <parameter name="wsdlServiceElement" value="TaskServiceImplService"/>
+      <parameter name="schemaQualified" value="http://beans.taskmanagerapp.example.com,http://service.taskmanagerapp.example.com"/>
+      <parameter name="wsdlServicePort" value="TaskServiceImpl"/>
+      <parameter name="className" value="com.example.taskmanagerapp.service.TaskServiceImplSoapBindingImpl"/>
+      <parameter name="wsdlPortType" value="TaskServiceImpl"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="getTask" qname="operNS:getTask" xmlns:operNS="http://service.taskmanagerapp.example.com" returnQName="retNS:getTaskReturn" xmlns:retNS="http://service.taskmanagerapp.example.com" returnType="rtns:Task" xmlns:rtns="http://beans.taskmanagerapp.example.com" soapAction="" >
+        <parameter qname="pns:id" xmlns:pns="http://service.taskmanagerapp.example.com" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getAllTasks" qname="operNS:getAllTasks" xmlns:operNS="http://service.taskmanagerapp.example.com" returnQName="retNS:getAllTasksReturn" xmlns:retNS="http://service.taskmanagerapp.example.com" returnType="rtns:Task" xmlns:rtns="http://beans.taskmanagerapp.example.com" soapAction="" >
+      </operation>
+      <operation name="deleteTask" qname="operNS:deleteTask" xmlns:operNS="http://service.taskmanagerapp.example.com" returnQName="retNS:deleteTaskReturn" xmlns:retNS="http://service.taskmanagerapp.example.com" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:id" xmlns:pns="http://service.taskmanagerapp.example.com" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="addTask" qname="operNS:addTask" xmlns:operNS="http://service.taskmanagerapp.example.com" returnQName="retNS:addTaskReturn" xmlns:retNS="http://service.taskmanagerapp.example.com" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:t" xmlns:pns="http://service.taskmanagerapp.example.com" type="tns:Task" xmlns:tns="http://beans.taskmanagerapp.example.com"/>
+      </operation>
+      <operation name="updateTask" qname="operNS:updateTask" xmlns:operNS="http://service.taskmanagerapp.example.com" returnQName="retNS:updateTaskReturn" xmlns:retNS="http://service.taskmanagerapp.example.com" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:t" xmlns:pns="http://service.taskmanagerapp.example.com" type="tns:Task" xmlns:tns="http://beans.taskmanagerapp.example.com"/>
+        <parameter qname="pns:id" xmlns:pns="http://service.taskmanagerapp.example.com" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="changeTaskStatus" qname="operNS:changeTaskStatus" xmlns:operNS="http://service.taskmanagerapp.example.com" returnQName="retNS:changeTaskStatusReturn" xmlns:retNS="http://service.taskmanagerapp.example.com" returnType="rtns:boolean" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="pns:id" xmlns:pns="http://service.taskmanagerapp.example.com" type="tns:long" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="pns:status" xmlns:pns="http://service.taskmanagerapp.example.com" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getAllTasksByStatus" qname="operNS:getAllTasksByStatus" xmlns:operNS="http://service.taskmanagerapp.example.com" returnQName="retNS:getAllTasksByStatusReturn" xmlns:retNS="http://service.taskmanagerapp.example.com" returnType="rtns:Task" xmlns:rtns="http://beans.taskmanagerapp.example.com" soapAction="" >
+        <parameter qname="pns:status" xmlns:pns="http://service.taskmanagerapp.example.com" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="getPercentageOfOpenTasks" qname="operNS:getPercentageOfOpenTasks" xmlns:operNS="http://service.taskmanagerapp.example.com" returnQName="retNS:getPercentageOfOpenTasksReturn" xmlns:retNS="http://service.taskmanagerapp.example.com" returnType="rtns:float" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+      </operation>
+      <parameter name="allowedMethods" value="updateTask getAllTasks changeTaskStatus getAllTasksByStatus deleteTask getPercentageOfOpenTasks getTask addTask"/>
+
+      <typeMapping
+        xmlns:ns="http://beans.taskmanagerapp.example.com"
+        qname="ns:Task"
+        type="java:com.example.taskmanagerapp.beans.Task"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle=""
+      />
+  </service>
+</deployment>
